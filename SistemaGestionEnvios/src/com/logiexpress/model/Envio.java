@@ -31,10 +31,10 @@ public abstract class Envio {
         this.tipoEnvio = tipoEnvio;
     }
 
-    public Envio(String id2, String origen2, String destino2, double peso2, Prioridad prioridad2,
-            boolean esInternacional) {
+    public Envio(String id2, String origen2, double peso2, Prioridad prioridad2, double distanciaKm) {
         //TODO Auto-generated constructor stub
     }
+
     // Métodos abstractos
     public abstract double calcularCosto();
 
