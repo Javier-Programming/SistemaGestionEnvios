@@ -1,7 +1,5 @@
 package com.logiexpress.enums;
 
-public class EstadoEnvio {
-
-    public static final EstadoEnvio PENDIENTE = null;
-
+public enum EstadoEnvio {
+    PENDIENTE, EN_TRANSITO, EN_ADUANA, ENTREGADO, CANCELADO;
 }
