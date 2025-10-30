@@ -9,7 +9,7 @@
  * - Tiempo de entrega: 1 día por cada 500 km (mínimo 1 día)
  * - Peso máximo permitido: 5.000 kg
  * 
- * @author Andres Torres
+ * @author Andres Torres Diaz
  * @version 1.0
  */
 
