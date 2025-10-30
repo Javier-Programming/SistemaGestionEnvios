@@ -9,7 +9,7 @@
  * - Tiempo de entrega: 1 día por cada 500 km (mínimo 1 día)
  * - Peso máximo permitido: 5.000 kg
  * 
- * @author Andres Torres
+ * @author Andres Torres Diaz
  * @version 1.0
  */
 
@@ -43,6 +43,8 @@ public class EnvioTerrestre extends Envio {
     // Costo base: $5.000 por kg
     // Costo por distancia: $500 por cada 100 km
     // Recargo express: +50%
+
+    //metodos abstractos
     @Override
     public double calcularCosto() {
         double costoBase = getPeso() * 5000;
@@ -75,3 +77,4 @@ public class EnvioTerrestre extends Envio {
     }
 
 }
+ 
