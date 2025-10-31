@@ -2,6 +2,9 @@
  * Representa un envío terrestre con reglas de negocio específicas.
  * Calcula el costo y tiempo de entrega según el peso, distancia y prioridad.
  * 
+ * Extiende la clase {Envio} para incluir información específica sobre
+ * los envíos que se realizan por vía terrestre.
+ * 
  * Reglas de negocio:
  * - Costo base: $5.000 por kilogramo
  * - Costo por distancia: $500 por cada 100 km
@@ -9,72 +12,59 @@
  * - Tiempo de entrega: 1 día por cada 500 km (mínimo 1 día)
  * - Peso máximo permitido: 5.000 kg
  * 
- * @author Andres Torres Diaz
+ * @author  Andrés Torres Díaz
  * @version 1.0
+ * @since   2025-10-29
  */
 
 package com.logiexpress.model;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
+import com.logiexpress.enums.EstadoEnvio;
 import com.logiexpress.enums.Prioridad;
+import com.logiexpress.enums.TipoEnvio;
 
 public class EnvioTerrestre extends Envio {
-    // atributos
-    public double distanciaKm;
+    // Atributo adicional
+    private double distanciaKm;
 
-    // constructor
-    public EnvioTerrestre(String origen, String destino, double peso, Prioridad prioridad,
-            double distanciaKm) {
-        super(origen, destino, peso, prioridad, distanciaKm);
-
-        // 🔹 Validaciones
-        if (peso <= 0) {
-            throw new IllegalArgumentException("El peso debe ser mayor que 0 kg.");
-        }
-        if (peso > 5000) {
-            throw new IllegalArgumentException("El peso máximo permitido es de 5000 kg.");
-        }
-        if (distanciaKm <= 0) {
-            throw new IllegalArgumentException("La distancia debe ser mayor que 0 km.");
-        }
-
+    // Constructor
+    public EnvioTerrestre(String origen, String destino, double peso, Prioridad prioridad, double distanciaKm) {
+        super(
+                UUID.randomUUID().toString(), // ID generado automáticamente
+                origen,
+                destino,
+                peso,
+                prioridad,
+                EstadoEnvio.PENDIENTE, // Estado inicial
+                LocalDate.now(), // Fecha actual
+                TipoEnvio.TERRESTRE // Tipo de envío
+        );
+        if (peso <= 0 || distanciaKm <= 0)
+            throw new IllegalArgumentException("Peso y distancia deben ser mayores que cero");
+        if (peso > 5000)
+            throw new IllegalArgumentException("Peso máximo permitido: 5000 kg");
         this.distanciaKm = distanciaKm;
     }
 
-    // Costo base: $5.000 por kg
-    // Costo por distancia: $500 por cada 100 km
-    // Recargo express: +50%
-
-    //metodos abstractos
+    // Métodos abstractos
     @Override
     public double calcularCosto() {
-        double costoBase = getPeso() * 5000;
-        double costoDistancia = (distanciaKm / 100) * 500;
-        double costoTotal = costoBase + costoDistancia;
-
-        if (getPrioridad() == Prioridad.EXPRESS) {
-            costoTotal *= 1.5; // recargo del 50%
-        }
-
-        return costoTotal;
+        double costo = peso * 5000 + (distanciaKm / 100) * 500;
+        if (prioridad == Prioridad.EXPRESS)
+            costo *= 1.5;
+        return costo;
     }
 
     @Override
     public int calcularTiempoEntrega() {
-        return Math.max(1, (int) Math.ceil(distanciaKm / 500.0)); // math.max devuelve el valor mayor en una divicion
-                                                                  // math.ceil redondea un numero hacia arrriba al
-                                                                  // entero mas cercano
+        return Math.max(1, (int) Math.ceil(distanciaKm / 500));
     }
 
     @Override
     public String obtenerDetallesEspecificos() {
-        return String.format(
-                "Envío terrestre de %.2f kg a %.0f km. Prioridad: %s. Costo: $%.2f. Tiempo estimado: %d días.",
-                getPeso(),
-                distanciaKm,
-                getPrioridad(),
-                calcularCosto(),
-                calcularTiempoEntrega());
+        return String.format("Distancia: %.2f km, Tiempo estimado: %d días", distanciaKm, calcularTiempoEntrega());
     }
-
 }
- 
